@@ -2,8 +2,8 @@
 
     /* Canvas properties*/
     var canvas = {
-        height: 375,
-        width: 500,
+        height: 768,
+        width: 1280,
         getContext: getContext,
         node: Object
     };
@@ -107,7 +107,7 @@
     };
 
 
-    function drawLine(){
+    function drawLine(smoothness){
         ctx.beginPath();
         ctx.moveTo(coord.x, coord.y);
 
@@ -115,9 +115,27 @@
             ctx.lineTo(coord.x, coord.y);
             ctx.strokeStyle = "red";
             ctx.stroke();
-        }, 100);
+        }, smoothness);
     };
 
+
+    var Ball = function(x, y, r) {
+        this.x = 150;
+        this.y = 150;
+        this.r = 15;
+        this.shape = Math.PI*2;
+
+        this.draw = function(){
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, this.shape, true);
+            ctx.fillStyle = "blue";
+            ctx.fill();
+        }
+
+        this.fall = function(){
+
+        }
+    }
 
     function init() {
         var drawLineInt = null;
@@ -130,11 +148,11 @@
             //showCursor();
         });
         canvas.node.addEventListener("mouseleave", function(){
-            coord.clear(event);
+            //coord.clear(event);
         });
 
         canvas.node.addEventListener("mousedown", function () {
-            drawLineInt = drawLine();
+            drawLineInt = drawLine(1);
         });
 
         canvas.node.addEventListener("mouseup", function(){
@@ -143,6 +161,14 @@
 
 
         showCursor();
+
+        var round = new Ball();
+
+        round.x = 200;
+        round.y = 150;
+        round.r = 50;
+
+        round.draw();
     }
 
 
