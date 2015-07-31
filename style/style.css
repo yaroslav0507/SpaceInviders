@@ -1,29 +1,13 @@
 body{
     font-family: Sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
 }
 
-#canvas{
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-    border: 1px solid #eee;
-}
-
-#canvas:active,
-#canvas:hover{
-    cursor: default;
-}
-
-.container{
-    width: 500px;
-    height: 100%;
-    position: relative;
-}
-
-.pointer-coords{
+canvas{
+    background-color: white;
     display: block;
-    position: absolute;
-    right: 7px;
-    top: 7px;
+    margin: 30px auto 0;
 }
+
