@@ -10,13 +10,16 @@
         this.bodies = createInvaders(this).concat([new Player(this, gameSize)]);
 
         var self = this;
-        var tick = function(){
-            self.update();
-            self.draw(screen, gameSize);
-            requestAnimationFrame(tick)
-        };
 
-        tick();
+        loadSound("shoot.wav", function(shootSound){
+            self.shootSound = shootSound;
+            var tick = function(){
+                self.update();
+                self.draw(screen, gameSize);
+                requestAnimationFrame(tick)
+            };
+            tick();
+        });
     }
 
     Game.prototype = {
@@ -78,7 +81,7 @@
             this.position.x += this.speedX;
             this.patrolX += this.speedX;
 
-            if(Math.random() < 0.05 && !this.game.invadersBelow(this)){
+            if(Math.random() < 0.01 && !this.game.invadersBelow(this)){
                 var bullet = new Bullet({
                     x: this.position.x + this.size.width / 2 - 3 / 2,
                     y: this.position.y + this.size.height
@@ -125,6 +128,9 @@
 
                     this.game.addBody(bullet);
                     this.bullets++;
+
+                    this.game.shootSound.load();
+                    this.game.shootSound.play();
                 }
             }
             this.timer++;
@@ -182,6 +188,16 @@
             b1.position.y < b2.position.y + b2.size.height &&
             b1.position.y + b1.size.height > b2.position.y
         );
+    };
+
+    var loadSound = function(url, callback){
+        var loaded = function(){
+            callback(sound);
+            sound.removeEventListener("canplaythrough", loaded);
+        }
+        var sound = new Audio(url);
+        sound.addEventListener("canplaythrough", loaded);
+        sound.load();
     };
 
     var drawRect = function(screen, body){
